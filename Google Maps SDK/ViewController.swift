@@ -8,23 +8,18 @@
 
 import UIKit
 import GoogleMaps
-import GooglePlaces
-import CoreLocation
+
 
 class ViewController: UIViewController,GMSMapViewDelegate {
     
     var locationManager = CLLocationManager()
     var currentLocation : CLLocation?
     var mapView         :GMSMapView!
-    var placesClient    :GMSPlacesClient!
     var zoomLevel       : Float = 15.0
-    //List of likely places
-    var likelyPlaces: [GMSPlace] = []
-    //The currently selected Place.
-    var selectedPlace: GMSPlace?
+    
     
     let darkSky = DarkSkyModel()
-    
+    var prediction:String = ""
     
     override func loadView() {
         let camera = GMSCameraPosition.camera(withLatitude: 1.285,longitude: 103.848,zoom: 3)
@@ -41,13 +36,60 @@ class ViewController: UIViewController,GMSMapViewDelegate {
     }
     
     
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ResultViewController"{
+            let destination = segue.destination as! ResultViewController
+                destination.result = self.prediction
+            
+            
+        }
+        
+    }
     
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
         print("You Tapped at \(coordinate.latitude),\(coordinate.longitude)")
         
-        darkSky.language = "ar"
-        darkSky.getWeather(Latitude: String(coordinate.latitude), Longitude: String(coordinate.longitude))
+        darkSky.language = "en"
+        
+        
+        let url = darkSky.darkSkyURL(latitude: String(coordinate.latitude), longitude: String(coordinate.longitude))
+        
+        let session = URLSession.shared
+        
+        let dataTask = session.dataTask(with: url){
+            
+            data,respone,error in
+            
+            if error != nil {
+                print("Error : \(error)")
+            }
+            else {
+                let dataDict = self.darkSky.parseJSON(Data: data!)
+                let dailyDict = dataDict?["daily"] as? [String:Any]
+                
+                
+                print("Data: \((dailyDict?["summary"])!)")
+                
+                    self.prediction = dailyDict?["summary"] as! String
+                    print("prediction : \(self.prediction)")
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "ResultViewController", sender: nil)
+                }
+                
+                
+            }
+        }
+        dataTask.resume()
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
         
         let loc = GMSGeocoder()
         loc.reverseGeocodeCoordinate(coordinate, completionHandler: {data,error in
@@ -73,20 +115,19 @@ class ViewController: UIViewController,GMSMapViewDelegate {
 //        locationManager.requestAlwaysAuthorization()
 //        locationManager.startUpdatingLocation()
 //        locationManager.delegate = self
+        
+        
+        
+//        let camera = GMSCameraPosition.camera(withLatitude: 1.285,longitude: 1.285, zoom: zoomLevel)
 //        
+//        mapView = GMSMapView.map(withFrame: view.bounds, camera: camera)
+//        mapView.settings.myLocationButton = false
+//        mapView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
+//        mapView.isMyLocationEnabled = false
 //        
-//        placesClient = GMSPlacesClient.shared()
-        
-        let camera = GMSCameraPosition.camera(withLatitude: 1.285,longitude: 1.285, zoom: zoomLevel)
-        
-        mapView = GMSMapView.map(withFrame: view.bounds, camera: camera)
-        mapView.settings.myLocationButton = true
-        mapView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
-        mapView.isMyLocationEnabled = true
-        
-        //Add the map to the view, hide it untile we've got a location update 
-        view.addSubview(mapView)
-        mapView.isHidden = true
+//        //Add the map to the view, hide it untile we've got a location update 
+//        view.addSubview(mapView)
+//        mapView.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {
