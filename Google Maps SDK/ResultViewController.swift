@@ -15,7 +15,11 @@ class ResultViewController: UIViewController {
     @IBOutlet weak var resultLabel: UILabel!
     @IBOutlet weak var popUpView  : UIView!
     
-    var result:String = "sds"
+    
+    
+    
+    var result:String = ""
+    var resultAdvancedDetails : [String:Any] = [:]
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -36,13 +40,22 @@ class ResultViewController: UIViewController {
         gestureRecognizer.delegate = self
         view.addGestureRecognizer(gestureRecognizer)
         
-        print("result: \(result)")
-        resultLabel.textColor = .black
+        
         resultLabel.text = result
-        
-        
     }
    
+    @IBAction func advancedDetailsButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "ToAdvancedViewController", sender: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ToAdvancedViewController" {
+            let destination = segue.destination as! AdvancedViewController
+            print("resultAdvancedDetails : \(resultAdvancedDetails["Country"])")
+            destination.advancedDetails = resultAdvancedDetails
+        }
+    }
+    
 
 }
 

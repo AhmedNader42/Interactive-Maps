@@ -20,13 +20,20 @@ class ViewController: UIViewController,GMSMapViewDelegate {
     
     let darkSky = DarkSkyModel()
     var prediction:String = ""
+    var advancedDetails : [String:Any] = [:]
+    
+    
+    
+    struct identifiers {
+        static let resultViewController = "ToResultViewController"
+    }
     
     override func loadView() {
         let camera = GMSCameraPosition.camera(withLatitude: 1.285,longitude: 103.848,zoom: 3)
         let mapView = GMSMapView.map(withFrame: .zero,camera: camera)
         mapView.mapType = .normal
-        let myLocation = mapView.myLocation
-        print("MyLocation \(myLocation?.coordinate.latitude),\(myLocation?.coordinate.longitude)")
+//        let myLocation = mapView.myLocation
+//        print("MyLocation \(myLocation?.coordinate.latitude),\(myLocation?.coordinate.longitude)")
         
         mapView.delegate = self
         self.view = mapView
@@ -37,11 +44,11 @@ class ViewController: UIViewController,GMSMapViewDelegate {
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ResultViewController"{
+        if segue.identifier == identifiers.resultViewController {
+            
             let destination = segue.destination as! ResultViewController
                 destination.result = self.prediction
-            
-            
+                destination.resultAdvancedDetails = advancedDetails
         }
         
     }
@@ -68,12 +75,10 @@ class ViewController: UIViewController,GMSMapViewDelegate {
                 let dailyDict = dataDict?["daily"] as? [String:Any]
                 
                 
-                print("Data: \((dailyDict?["summary"])!)")
                 
                     self.prediction = dailyDict?["summary"] as! String
-                    print("prediction : \(self.prediction)")
                 DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: "ResultViewController", sender: nil)
+                    self.performSegue(withIdentifier: identifiers.resultViewController, sender: nil)
                 }
                 
                 
@@ -83,23 +88,80 @@ class ViewController: UIViewController,GMSMapViewDelegate {
         
 
         
-        
-        
-        
-        
-        
-        
-        
-        
         let loc = GMSGeocoder()
-        loc.reverseGeocodeCoordinate(coordinate, completionHandler: {data,error in
+        loc.reverseGeocodeCoordinate(coordinate, completionHandler: {
+            data,error in
             
-            
-            
-//            for i in (data?.results())! {
-//                print("Country:  \((i.country))")
-//                print("LastLocality : \(i.locality)")
-//            }
+            if data?.results() != nil{
+                for i in (data?.results())! {
+                    if i.country != nil{
+                        self.advancedDetails["Country"] = i.country
+                        break
+                    }
+                    else {
+                        self.advancedDetails["Country"] = "Not Found"
+                    }
+                }
+                for i in (data?.results())! {
+                    if i.locality != nil{
+                        self.advancedDetails["Locality"] = i.locality
+                        break
+                    }
+                    else {
+                        self.advancedDetails["Locality"] = "Not Found"
+                    }
+                }
+                
+                for i in (data?.results())! {
+                    if i.subLocality != nil{
+                        self.advancedDetails["SubLocality"] = i.subLocality
+                        break
+                    }
+                    else {
+                        self.advancedDetails["SubLocality"] = "Not Found"
+                    }
+                }
+                for i in (data?.results())! {
+                    if i.thoroughfare != nil{
+                        self.advancedDetails["ThoroughFare"] = i.thoroughfare
+                        break
+                    }
+                    else {
+                        self.advancedDetails["ThoroughFare"] = "Not Found"
+                    }
+                }
+                self.advancedDetails["Latitude"] = coordinate.latitude
+                self.advancedDetails["Longitude"] = coordinate.longitude
+                
+                for i in (data?.results())! {
+                    if i.postalCode != nil{
+                        self.advancedDetails["PostalCode"] = i.postalCode
+                        break
+                    }
+                    else {
+                        self.advancedDetails["PostalCode"] = "Not Found"
+                    }
+                }
+                for i in (data?.results())! {
+                    if i.lines != nil{
+                        self.advancedDetails["Lines"] = i.lines?.startIndex
+                        break
+                    }
+                    else {
+                        self.advancedDetails["Lines"] = "Not Found"
+                    }
+                }
+                for i in (data?.results())! {
+                    if i.administrativeArea != nil{
+                        self.advancedDetails["AdministrativeArea"] = i.administrativeArea
+                        break
+                    }
+                    else {
+                        self.advancedDetails["AdministrativeArea"] = "Not Found"
+                    }
+                }
+            }
+
             
         })
         
@@ -118,16 +180,7 @@ class ViewController: UIViewController,GMSMapViewDelegate {
         
         
         
-//        let camera = GMSCameraPosition.camera(withLatitude: 1.285,longitude: 1.285, zoom: zoomLevel)
-//        
-//        mapView = GMSMapView.map(withFrame: view.bounds, camera: camera)
-//        mapView.settings.myLocationButton = false
-//        mapView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
-//        mapView.isMyLocationEnabled = false
-//        
-//        //Add the map to the view, hide it untile we've got a location update 
-//        view.addSubview(mapView)
-//        mapView.isHidden = false
+
     }
 
     override func didReceiveMemoryWarning() {

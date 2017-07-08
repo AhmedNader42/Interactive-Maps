@@ -14,6 +14,9 @@
 		845BD96C1F0719F4009B0A25 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 845BD96A1F0719F4009B0A25 /* Main.storyboard */; };
 		845BD96E1F0719F4009B0A25 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 845BD96D1F0719F4009B0A25 /* Assets.xcassets */; };
 		845BD9711F0719F4009B0A25 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 845BD96F1F0719F4009B0A25 /* LaunchScreen.storyboard */; };
+		848146E81F11062700B4AD0D /* AdvancedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848146E71F11062700B4AD0D /* AdvancedViewController.swift */; };
+		848146EA1F1115CF00B4AD0D /* AdvancedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 848146E91F1115CF00B4AD0D /* AdvancedCell.xib */; };
+		848146EC1F11182700B4AD0D /* AdvancedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848146EB1F11182700B4AD0D /* AdvancedCell.swift */; };
 		84C641371F0C209E00AA59B6 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C641361F0C209E00AA59B6 /* ResultViewController.swift */; };
 		84C6413B1F0C291800AA59B6 /* DimmingPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C6413A1F0C291800AA59B6 /* DimmingPresentationController.swift */; };
 /* End PBXBuildFile section */
@@ -27,6 +30,9 @@
 		845BD96D1F0719F4009B0A25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		845BD9701F0719F4009B0A25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		845BD9721F0719F4009B0A25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		848146E71F11062700B4AD0D /* AdvancedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedViewController.swift; sourceTree = "<group>"; };
+		848146E91F1115CF00B4AD0D /* AdvancedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AdvancedCell.xib; path = "Google Maps SDK/AdvancedCell.xib"; sourceTree = "<group>"; };
+		848146EB1F11182700B4AD0D /* AdvancedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AdvancedCell.swift; path = "Google Maps SDK/AdvancedCell.swift"; sourceTree = "<group>"; };
 		84C641361F0C209E00AA59B6 /* ResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		84C6413A1F0C291800AA59B6 /* DimmingPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DimmingPresentationController.swift; sourceTree = "<group>"; };
 		B43361C9A72D2EA0C911EE3A /* Pods-Google Maps SDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Google Maps SDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Google Maps SDK/Pods-Google Maps SDK.debug.xcconfig"; sourceTree = "<group>"; };
@@ -86,6 +92,7 @@
 			children = (
 				845BD9661F0719F4009B0A25 /* AppDelegate.swift */,
 				84C641381F0C20AF00AA59B6 /* ViewControllers */,
+				848146ED1F11183A00B4AD0D /* NIB */,
 				84C6413C1F0C292100AA59B6 /* PresentationController */,
 				84C641391F0C20BD00AA59B6 /* Models */,
 				845BD96A1F0719F4009B0A25 /* Main.storyboard */,
@@ -96,11 +103,22 @@
 			path = "Google Maps SDK";
 			sourceTree = "<group>";
 		};
+		848146ED1F11183A00B4AD0D /* NIB */ = {
+			isa = PBXGroup;
+			children = (
+				848146E91F1115CF00B4AD0D /* AdvancedCell.xib */,
+				848146EB1F11182700B4AD0D /* AdvancedCell.swift */,
+			);
+			name = NIB;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		84C641381F0C20AF00AA59B6 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				845BD9681F0719F4009B0A25 /* ViewController.swift */,
 				84C641361F0C209E00AA59B6 /* ResultViewController.swift */,
+				848146E71F11062700B4AD0D /* AdvancedViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -185,6 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				845BD9711F0719F4009B0A25 /* LaunchScreen.storyboard in Resources */,
+				848146EA1F1115CF00B4AD0D /* AdvancedCell.xib in Resources */,
 				845BD96E1F0719F4009B0A25 /* Assets.xcassets in Resources */,
 				845BD96C1F0719F4009B0A25 /* Main.storyboard in Resources */,
 			);
@@ -249,7 +268,9 @@
 				84C6413B1F0C291800AA59B6 /* DimmingPresentationController.swift in Sources */,
 				845BD9691F0719F4009B0A25 /* ViewController.swift in Sources */,
 				845BD9671F0719F4009B0A25 /* AppDelegate.swift in Sources */,
+				848146E81F11062700B4AD0D /* AdvancedViewController.swift in Sources */,
 				84C641371F0C209E00AA59B6 /* ResultViewController.swift in Sources */,
+				848146EC1F11182700B4AD0D /* AdvancedCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
