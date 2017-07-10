@@ -152,9 +152,6 @@ class AdvancedViewController: UIViewController {
  *                                                           *
  *************************************************************/
 extension AdvancedViewController: UITableViewDelegate {
-    
-    
-    
 }
 
 extension AdvancedViewController: UITableViewDataSource {

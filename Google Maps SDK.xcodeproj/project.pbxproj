@@ -91,14 +91,12 @@
 			isa = PBXGroup;
 			children = (
 				845BD9661F0719F4009B0A25 /* AppDelegate.swift */,
+				845BD96A1F0719F4009B0A25 /* Main.storyboard */,
 				84C641381F0C20AF00AA59B6 /* ViewControllers */,
 				848146ED1F11183A00B4AD0D /* NIB */,
 				84C6413C1F0C292100AA59B6 /* PresentationController */,
 				84C641391F0C20BD00AA59B6 /* Models */,
-				845BD96A1F0719F4009B0A25 /* Main.storyboard */,
-				845BD96D1F0719F4009B0A25 /* Assets.xcassets */,
-				845BD96F1F0719F4009B0A25 /* LaunchScreen.storyboard */,
-				845BD9721F0719F4009B0A25 /* Info.plist */,
+				84A9D30B1F1426F700248B44 /* Support Files */,
 			);
 			path = "Google Maps SDK";
 			sourceTree = "<group>";
@@ -111,6 +109,16 @@
 			);
 			name = NIB;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		84A9D30B1F1426F700248B44 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				845BD96D1F0719F4009B0A25 /* Assets.xcassets */,
+				845BD96F1F0719F4009B0A25 /* LaunchScreen.storyboard */,
+				845BD9721F0719F4009B0A25 /* Info.plist */,
+			);
+			name = "Support Files";
 			sourceTree = "<group>";
 		};
 		84C641381F0C20AF00AA59B6 /* ViewControllers */ = {

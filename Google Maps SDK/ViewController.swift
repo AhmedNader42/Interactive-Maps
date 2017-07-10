@@ -19,7 +19,14 @@ class ViewController: UIViewController,GMSMapViewDelegate {
      *                                                           *
      *************************************************************/
     @IBOutlet weak var languageSegmentedControl : UISegmentedControl!
+    @IBOutlet weak var unitSegmentedControl     : UISegmentedControl!
     
+    
+    /*************************************************************
+     *                                                           *
+     *                        IBAction methods                   *
+     *                                                           *
+     *************************************************************/
     @IBAction func languageSegmentedControlButton(_ sender: UISegmentedControl) {
         switch languageSegmentedControl.selectedSegmentIndex {
         case 1:
@@ -30,6 +37,15 @@ class ViewController: UIViewController,GMSMapViewDelegate {
             darkSky.language = "fr"
         default:
             darkSky.language = "en"
+        }
+    }
+    
+    @IBAction func unitSegmentedControl (_ sender: UISegmentedControl) {
+        switch unitSegmentedControl.selectedSegmentIndex {
+        case 1:
+            darkSky.unit = "us"
+        default:
+            darkSky.unit = "si"
         }
     }
     
@@ -194,9 +210,6 @@ extension ViewController: CLLocationManagerDelegate{
     //To handle incoming location events.
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location: CLLocation = locations.last!
-        print("Location: \(location.coordinate)")
-        
-        
         
         currentLatitude  = location.coordinate.latitude 
         currentLongitude = location.coordinate.longitude

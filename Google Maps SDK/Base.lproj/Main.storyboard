@@ -156,6 +156,19 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="uW0-ot-eLK">
+                        <barButtonItem key="leftBarButtonItem" id="fXO-Re-KOs">
+                            <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" id="gdw-jP-mJf">
+                                <rect key="frame" x="16" y="7" width="83" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="℃"/>
+                                    <segment title="℉"/>
+                                </segments>
+                                <connections>
+                                    <action selector="unitSegmentedControl:" destination="BYZ-38-t0r" eventType="valueChanged" id="6AE-NG-NTK"/>
+                                </connections>
+                            </segmentedControl>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" id="e85-X6-LJp">
                             <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="Fxa-oo-DgA">
                                 <rect key="frame" x="169" y="7" width="190" height="30"/>
@@ -174,6 +187,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="languageSegmentedControl" destination="Fxa-oo-DgA" id="wvf-ah-tUq"/>
+                        <outlet property="unitSegmentedControl" destination="gdw-jP-mJf" id="pSj-D3-5Ah"/>
                         <segue destination="4PY-CX-wye" kind="presentation" identifier="ToResultViewController" id="EtP-gg-cWe"/>
                     </connections>
                 </viewController>
@@ -197,7 +211,7 @@
                     </connections>
                 </navigationController>
             </objects>
-            <point key="canvasLocation" x="5203" y="384"/>
+            <point key="canvasLocation" x="5132" y="384"/>
         </scene>
     </scenes>
 </document>

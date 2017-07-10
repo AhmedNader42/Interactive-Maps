@@ -110,12 +110,6 @@ class ResultViewController: UIViewController {
     func close(){
         dismiss(animated: true, completion: nil)
     }
-    
-   
-
-    
-    
-
 }
 
 
@@ -126,7 +120,6 @@ class ResultViewController: UIViewController {
  *                                                           *
  *************************************************************/
 extension ResultViewController: UIViewControllerTransitioningDelegate{
-    
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return DimmingPresentationController(presentedViewController: presented, presenting: presenting)
     }
