@@ -7,59 +7,124 @@
 //
 
 import UIKit
+import GoogleMaps
 
 class ResultViewController: UIViewController {
 
     
-    
+    /*************************************************************
+     *                                                           *
+     *                        Outlets                            *
+     *                                                           *
+     *************************************************************/
     @IBOutlet weak var resultLabel: UILabel!
+    @IBOutlet weak var upperResultLabel : UILabel!
     @IBOutlet weak var popUpView  : UIView!
     
     
-    
-    
+    /*************************************************************
+     *                                                           *
+     *                      Variables                            *
+     *                                                           *
+     *************************************************************/
+    var advancedLocation = [GMSAddress]()
     var result:String = ""
-    var resultAdvancedDetails : [String:Any] = [:]
     
+    
+    
+    /*************************************************************
+     *                                                           *
+     *                      Identifiers                          *
+     *                                                           *
+     *************************************************************/
+    struct identefiers {
+        static let advancedViewController = "ToAdvancedViewController"
+    }
+    
+    
+    /*************************************************************
+     *                                                           *
+     *                      Activity Life cycle                  *
+     *                                                           *
+     *************************************************************/
+    override func viewDidLoad() {
+        popUpView.layer.cornerRadius = 20
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(close))
+        gestureRecognizer.cancelsTouchesInView = false
+        gestureRecognizer.delegate = self
+        view.addGestureRecognizer(gestureRecognizer)
+        
+        resultLabel.text = result
+        
+        for i in advancedLocation {
+            if i.country != nil {
+                upperResultLabel.text = i.country
+                break
+            }
+            else{
+                upperResultLabel.text = "Not Found"
+            }
+        }
+    }
+    
+    /*************************************************************
+     *                                                           *
+     *                      Initializer                          *
+     *                                                           *
+     *************************************************************/
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         modalPresentationStyle = .custom
         transitioningDelegate = self
     }
     
+    
+    /*************************************************************
+     *                                                           *
+     *                      IBAction methods                     *
+     *                                                           *
+     *************************************************************/
+    @IBAction func advancedDetailsButton(_ sender: UIButton) {
+        performSegue(withIdentifier: identefiers.advancedViewController, sender: nil)
+    }
+    
+    
+    /*************************************************************
+     *                                                           *
+     *                        Segue methods                      *
+     *                                                           *
+     *************************************************************/
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == identefiers.advancedViewController
+        {
+            let destination = segue.destination as! AdvancedViewController
+            destination.advancedLocation = advancedLocation
+        }
+    }
+    
+    /*************************************************************
+     *                                                           *
+     *                        Other methods                      *
+     *                                                           *
+     *************************************************************/
     func close(){
         dismiss(animated: true, completion: nil)
     }
     
    
-    override func viewDidLoad() {
-        popUpView.layer.cornerRadius = 20
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(close))
-        
-        gestureRecognizer.cancelsTouchesInView = false
-        gestureRecognizer.delegate = self
-        view.addGestureRecognizer(gestureRecognizer)
-        
-        
-        resultLabel.text = result
-    }
-   
-    @IBAction func advancedDetailsButton(_ sender: UIButton) {
-        performSegue(withIdentifier: "ToAdvancedViewController", sender: nil)
-    }
+
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ToAdvancedViewController" {
-            let destination = segue.destination as! AdvancedViewController
-            print("resultAdvancedDetails : \(resultAdvancedDetails["Country"])")
-            destination.advancedDetails = resultAdvancedDetails
-        }
-    }
     
 
 }
 
 
+
+/*************************************************************
+ *                                                           *
+ *                        Transition Delegate                *
+ *                                                           *
+ *************************************************************/
 extension ResultViewController: UIViewControllerTransitioningDelegate{
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -68,11 +133,14 @@ extension ResultViewController: UIViewControllerTransitioningDelegate{
 }
 
 
-
+/*************************************************************
+ *                                                           *
+ *                   Gesture Recognizer Delegate             *
+ *                                                           *
+ *************************************************************/
 extension ResultViewController: UIGestureRecognizerDelegate {
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        
         return (touch.view === self.view)
     }
 }

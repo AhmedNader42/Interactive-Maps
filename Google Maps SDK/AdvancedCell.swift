@@ -19,7 +19,6 @@ class AdvancedCell: UITableViewCell {
     
     
     func configure (Key key: String,Value value: Any) {
-        print("In config")
         keyLabel.text = key
         valueLabel.text = String(describing: value)
         

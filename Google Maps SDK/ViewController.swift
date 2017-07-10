@@ -12,58 +12,152 @@ import GoogleMaps
 
 class ViewController: UIViewController,GMSMapViewDelegate {
     
-    var locationManager = CLLocationManager()
-    var currentLocation : CLLocation?
-    var mapView         :GMSMapView!
-    var zoomLevel       : Float = 15.0
+    
+    /*************************************************************
+     *                                                           *
+     *                            Outlets                        *
+     *                                                           *
+     *************************************************************/
+    @IBOutlet weak var languageSegmentedControl : UISegmentedControl!
+    
+    @IBAction func languageSegmentedControlButton(_ sender: UISegmentedControl) {
+        switch languageSegmentedControl.selectedSegmentIndex {
+        case 1:
+            darkSky.language = "ar"
+        case 2 :
+            darkSky.language = "es"
+        case 3:
+            darkSky.language = "fr"
+        default:
+            darkSky.language = "en"
+        }
+    }
     
     
-    let darkSky = DarkSkyModel()
-    var prediction:String = ""
-    var advancedDetails : [String:Any] = [:]
+    /*************************************************************
+     *                                                           *
+     *                      Variables                            *
+     *                                                           *
+     *************************************************************/
+    //Location/Map related
+    var mapView              : GMSMapView!
+    var locationManager      = CLLocationManager()
+    var currentLatitude      = CLLocationDegrees(floatLiteral: 30.5)
+    var currentLongitude     = CLLocationDegrees(floatLiteral: 31.2)
+    var advancedLocation     = [GMSAddress]()
+    var marker               = GMSMarker()
+    
+    //Networking related
+    var dataTask             : URLSessionDataTask?
+    let darkSky              = DarkSkyModel()
+    var prediction           = ""
     
     
     
+    /*************************************************************
+     *                                                           *
+     *                        Identifiers                        *
+     *                                                           *
+     *************************************************************/
     struct identifiers {
         static let resultViewController = "ToResultViewController"
     }
     
+    
+    
+    /*************************************************************
+     *                                                           *
+     *                        Activity Life cycle                *
+     *                                                           *
+     *************************************************************/
     override func loadView() {
-        let camera = GMSCameraPosition.camera(withLatitude: 1.285,longitude: 103.848,zoom: 3)
+       
+        let camera = GMSCameraPosition.camera(withLatitude: currentLatitude,longitude: currentLongitude,zoom: 3)
         let mapView = GMSMapView.map(withFrame: .zero,camera: camera)
         mapView.mapType = .normal
-//        let myLocation = mapView.myLocation
-//        print("MyLocation \(myLocation?.coordinate.latitude),\(myLocation?.coordinate.longitude)")
-        
         mapView.delegate = self
         self.view = mapView
-        
-        
+    }
+    
+    override func viewDidLoad() {
+        locationManager = CLLocationManager()
+        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
+        locationManager.delegate = self
         
     }
     
-    
+    /*************************************************************
+     *                                                           *
+     *                        Segue method                       *
+     *                                                           *
+     *************************************************************/
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == identifiers.resultViewController {
             
             let destination = segue.destination as! ResultViewController
-                destination.result = self.prediction
-                destination.resultAdvancedDetails = advancedDetails
+            destination.result = self.prediction
+            destination.advancedLocation = self.advancedLocation
         }
-        
     }
     
+    /*************************************************************
+     *                                                           *
+     *                        Map Methods                        *
+     *                                                           *
+     *************************************************************/
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
         print("You Tapped at \(coordinate.latitude),\(coordinate.longitude)")
         
-        darkSky.language = "en"
+        //Clear all the map overlays (markers/overlays).
+        mapView.clear()
+        
+        //Animate and zoom to the tapped postition.
+        mapView.animate(toLocation: coordinate)
+        mapView.animate(toZoom: 6)
+        
+        //Create a circle at the tapped postion (Under the marker).
+        let circle = GMSCircle(position: coordinate, radius: 20)
+        circle.map = mapView
+        circle.strokeColor = .green
+        circle.strokeWidth = 15
+        //Create a marker at the tapped postion
+        marker = GMSMarker(position: coordinate)
+        marker.appearAnimation = .pop
+        marker.icon = GMSMarker.markerImage(with: .green)
+        marker.map = mapView
         
         
+        //Cancel previous request and start a new one.
+        dataTask?.cancel()
+        
+        
+        
+        //Reverse Geocode the coordinates to get more detailed information.
+        let loc = GMSGeocoder()
+        loc.reverseGeocodeCoordinate(coordinate, completionHandler: {
+            data,error in
+            if error != nil {
+                print("ReverseGeoCoderError : \(error)")
+            }
+            else if data != nil, data?.results()?.count != 0 {
+                
+                self.advancedLocation = (data?.results())!
+                if data?.firstResult()?.country != nil {
+                    self.marker.title = (data?.firstResult()?.country)!
+                }
+                if data?.firstResult()?.locality != nil {
+                    self.marker.snippet = data?.firstResult()?.locality
+                }
+                
+            }
+        })
+        
+        //Send a request with the url formatted by the DarkSky model
         let url = darkSky.darkSkyURL(latitude: String(coordinate.latitude), longitude: String(coordinate.longitude))
-        
         let session = URLSession.shared
-        
-        let dataTask = session.dataTask(with: url){
+        dataTask = session.dataTask(with: url){
             
             data,respone,error in
             
@@ -72,143 +166,45 @@ class ViewController: UIViewController,GMSMapViewDelegate {
             }
             else {
                 let dataDict = self.darkSky.parseJSON(Data: data!)
-                let dailyDict = dataDict?["daily"] as? [String:Any]
+                
+                self.prediction =  self.darkSky.parseData(Data: dataDict!)
                 
                 
-                
-                    self.prediction = dailyDict?["summary"] as! String
+                //Go to the ResultViewController
                 DispatchQueue.main.async {
                     self.performSegue(withIdentifier: identifiers.resultViewController, sender: nil)
                 }
                 
-                
             }
         }
-        dataTask.resume()
-        
-
-        
-        let loc = GMSGeocoder()
-        loc.reverseGeocodeCoordinate(coordinate, completionHandler: {
-            data,error in
-            
-            if data?.results() != nil{
-                for i in (data?.results())! {
-                    if i.country != nil{
-                        self.advancedDetails["Country"] = i.country
-                        break
-                    }
-                    else {
-                        self.advancedDetails["Country"] = "Not Found"
-                    }
-                }
-                for i in (data?.results())! {
-                    if i.locality != nil{
-                        self.advancedDetails["Locality"] = i.locality
-                        break
-                    }
-                    else {
-                        self.advancedDetails["Locality"] = "Not Found"
-                    }
-                }
-                
-                for i in (data?.results())! {
-                    if i.subLocality != nil{
-                        self.advancedDetails["SubLocality"] = i.subLocality
-                        break
-                    }
-                    else {
-                        self.advancedDetails["SubLocality"] = "Not Found"
-                    }
-                }
-                for i in (data?.results())! {
-                    if i.thoroughfare != nil{
-                        self.advancedDetails["ThoroughFare"] = i.thoroughfare
-                        break
-                    }
-                    else {
-                        self.advancedDetails["ThoroughFare"] = "Not Found"
-                    }
-                }
-                self.advancedDetails["Latitude"] = coordinate.latitude
-                self.advancedDetails["Longitude"] = coordinate.longitude
-                
-                for i in (data?.results())! {
-                    if i.postalCode != nil{
-                        self.advancedDetails["PostalCode"] = i.postalCode
-                        break
-                    }
-                    else {
-                        self.advancedDetails["PostalCode"] = "Not Found"
-                    }
-                }
-                for i in (data?.results())! {
-                    if i.lines != nil{
-                        self.advancedDetails["Lines"] = i.lines?.startIndex
-                        break
-                    }
-                    else {
-                        self.advancedDetails["Lines"] = "Not Found"
-                    }
-                }
-                for i in (data?.results())! {
-                    if i.administrativeArea != nil{
-                        self.advancedDetails["AdministrativeArea"] = i.administrativeArea
-                        break
-                    }
-                    else {
-                        self.advancedDetails["AdministrativeArea"] = "Not Found"
-                    }
-                }
-            }
-
-            
-        })
-        
-        
+        dataTask?.resume()
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
-//        locationManager = CLLocationManager()
-//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-//        locationManager.requestAlwaysAuthorization()
-//        locationManager.startUpdatingLocation()
-//        locationManager.delegate = self
-        
-        
-        
-
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+    
+    
 }
 
 
+
+/*************************************************************
+ *                                                           *
+ *                        LocationManager Delegate           *
+ *                                                           *
+ *************************************************************/
 extension ViewController: CLLocationManagerDelegate{
     //To handle incoming location events.
-//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        let location: CLLocation = locations.last!
-//        print("Location: \(location)")
-//        
-//        let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude,longitude: location.coordinate.longitude, zoom: zoomLevel)
-//        
-//        
-//        if mapView.isHidden {
-//            mapView.isHidden = false
-//            mapView.camera = camera
-//        } else {
-//            mapView.animate(to: camera)
-//        }
-//        
-//    }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location: CLLocation = locations.last!
+        print("Location: \(location.coordinate)")
+        
+        
+        
+        currentLatitude  = location.coordinate.latitude 
+        currentLongitude = location.coordinate.longitude
+        locationManager.stopUpdatingLocation()
+        
+    }
     
-        //Handle authorization for location manager
+    //Handle authorization for location manager
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .restricted:
@@ -230,7 +226,7 @@ extension ViewController: CLLocationManagerDelegate{
         locationManager.stopUpdatingLocation()
         print("Erorr: \(error)")
     }
-        
+    
     
 }
 

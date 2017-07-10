@@ -30,4 +30,12 @@ class DarkSkyModel {
             return nil
         }
     }
+    
+    func parseData(Data data:[String:Any]) -> String {
+        
+        let dailyDict = data["daily"] as? [String:Any]
+        let prediction = dailyDict?["summary"] as! String
+        
+        return prediction
+    }
 }

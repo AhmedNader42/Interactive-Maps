@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="yVf-Wu-QEa">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -81,11 +81,12 @@
                     <connections>
                         <outlet property="popUpView" destination="uYq-JL-znZ" id="o6K-67-00x"/>
                         <outlet property="resultLabel" destination="4rt-6d-Yty" id="CFN-lt-9MW"/>
+                        <outlet property="upperResultLabel" destination="a4o-cQ-fuv" id="q8G-1u-NfN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CVP-iC-R9f" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4692" y="384"/>
+            <point key="canvasLocation" x="6570.3999999999996" y="383.65817091454278"/>
         </scene>
         <!--Advanced View Controller-->
         <scene sceneID="Eeq-oq-PHL">
@@ -105,7 +106,7 @@
                                     <navigationItem title="Advanced Details" id="gip-ur-4Qs">
                                         <barButtonItem key="leftBarButtonItem" title="&lt; Back" id="oRu-0f-8S3">
                                             <connections>
-                                                <segue destination="BYZ-38-t0r" kind="show" identifier="ToMapViewController" id="sni-iQ-2Na"/>
+                                                <segue destination="yVf-Wu-QEa" kind="show" identifier="ToMapViewController" id="sni-iQ-2Na"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -139,7 +140,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hvi-z8-dko" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5581.875" y="383.75"/>
+            <point key="canvasLocation" x="7460" y="383.65817091454278"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -154,13 +155,49 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
+                    <navigationItem key="navigationItem" id="uW0-ot-eLK">
+                        <barButtonItem key="rightBarButtonItem" id="e85-X6-LJp">
+                            <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="Fxa-oo-DgA">
+                                <rect key="frame" x="169" y="7" width="190" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="EN"/>
+                                    <segment title="AR"/>
+                                    <segment title="ES"/>
+                                    <segment title="FR"/>
+                                </segments>
+                                <connections>
+                                    <action selector="languageSegmentedControlButton:" destination="BYZ-38-t0r" eventType="valueChanged" id="BCe-aL-6II"/>
+                                </connections>
+                            </segmentedControl>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="languageSegmentedControl" destination="Fxa-oo-DgA" id="wvf-ah-tUq"/>
                         <segue destination="4PY-CX-wye" kind="presentation" identifier="ToResultViewController" id="EtP-gg-cWe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3942" y="384"/>
+            <point key="canvasLocation" x="5820" y="383.65817091454278"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="0Z0-G0-iNp">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pme-9i-rFC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yVf-Wu-QEa" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="4uZ-hB-AND">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="yQ5-qj-dL3"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="5203" y="384"/>
         </scene>
     </scenes>
 </document>
