@@ -47,10 +47,13 @@ class AdvancedViewController: UIViewController {
      *                                                           *
      *************************************************************/
     override func viewDidLoad() {
+        super.viewDidLoad()
+        // Setup the tableview height to match the nib and register the Nib
         tableView.rowHeight = 60
         let cellNib = UINib(nibName: identefiers.advancedCell, bundle: nil)
-        
         tableView.register(cellNib, forCellReuseIdentifier: identefiers.advancedCell)
+        
+        // Configure the data and reload the tableView
         configureData()
         tableView.reloadData()
     }
@@ -58,13 +61,16 @@ class AdvancedViewController: UIViewController {
     
     /*************************************************************
      *                                                           *
-     *                        Other methods                      *
+     *                        Configure method                   *
      *                                                           *
      *************************************************************/
-    //Is used to fill the dictionary with the values to display on screen
+    /// Fill the results dictionary with the values to display on screen
     func configureData(){
         
+        // Make sure the dict isn't emptt
         if advancedLocation.count != 0 {
+            
+            // Loop over the dict to find a valid(not nil) value for each key or write not found
             for i in advancedLocation {
                 if i.country != nil{
                     advancedDetails["Country"] = i.country!
@@ -89,7 +95,6 @@ class AdvancedViewController: UIViewController {
             for i in advancedLocation {
                 if i.subLocality != nil{
                     advancedDetails["SubLocality"] = i.subLocality!
-                    print("SubLocality : \(advancedDetails["SubLocality"]!)")
                     break
                 }
                 else {
@@ -99,7 +104,6 @@ class AdvancedViewController: UIViewController {
             for i in advancedLocation {
                 if i.thoroughfare != nil{
                     advancedDetails["ThoroughFare"] = i.thoroughfare!
-                    print("ThoroughFare : \(advancedDetails["ThoroughFare"]!)")
                     break
                 }
                 else {
@@ -109,7 +113,6 @@ class AdvancedViewController: UIViewController {
             for i in advancedLocation {
                 if i.postalCode != nil{
                     advancedDetails["PostalCode"] = i.postalCode!
-                    print("PostalCode: \(advancedDetails["PostalCode"]!)")
                     break
                 }
                 else {
@@ -119,7 +122,6 @@ class AdvancedViewController: UIViewController {
             for i in advancedLocation {
                 if i.lines != nil{
                     advancedDetails["Lines"] = String(describing: i.lines!.startIndex)
-                    print("Lines : \(advancedDetails["Lines"]!)")
                     break
                 }
                 else {
@@ -129,7 +131,6 @@ class AdvancedViewController: UIViewController {
             for i in advancedLocation {
                 if i.administrativeArea != nil{
                     advancedDetails["AdministrativeArea"] = i.administrativeArea!
-                    print("Administrative Area : \(advancedDetails["AdministrativeArea"]!)")
                     break
                 }
                 else {
@@ -151,9 +152,6 @@ class AdvancedViewController: UIViewController {
  *                        Table View methods                 *
  *                                                           *
  *************************************************************/
-extension AdvancedViewController: UITableViewDelegate {
-}
-
 extension AdvancedViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -165,9 +163,7 @@ extension AdvancedViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: identefiers.advancedCell, for: indexPath) as! AdvancedCell
         
         
-        cell.configure(Key: "   " + keys[indexPath.row] ,Value: advancedDetails[keys[indexPath.row]]!)
-        
-        //print("Key : \(keys[indexPath.row]) , Value : \(advancedDetails[keys[indexPath.row]]!) ")
+        cell.configure(Key: "  " + keys[indexPath.row] ,Value: "  " + advancedDetails[keys[indexPath.row]]!)
         
         
         return cell
@@ -175,9 +171,11 @@ extension AdvancedViewController: UITableViewDataSource {
 }
 
 
-
-
-
+extension AdvancedViewController: UIViewControllerTransitioningDelegate{
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return DimmingPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
 
 
 

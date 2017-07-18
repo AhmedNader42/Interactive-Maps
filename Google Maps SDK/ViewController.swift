@@ -10,7 +10,7 @@ import UIKit
 import GoogleMaps
 
 
-class ViewController: UIViewController,GMSMapViewDelegate {
+class ViewController: UIViewController {
     
     
     /*************************************************************
@@ -57,7 +57,6 @@ class ViewController: UIViewController,GMSMapViewDelegate {
      *************************************************************/
     //Location/Map related
     var mapView              : GMSMapView!
-    var locationManager      = CLLocationManager()
     var currentLatitude      = CLLocationDegrees(floatLiteral: 30.5)
     var currentLongitude     = CLLocationDegrees(floatLiteral: 31.2)
     var advancedLocation     = [GMSAddress]()
@@ -88,6 +87,7 @@ class ViewController: UIViewController,GMSMapViewDelegate {
      *************************************************************/
     override func loadView() {
        
+        // Setup the camera
         let camera = GMSCameraPosition.camera(withLatitude: currentLatitude,longitude: currentLongitude,zoom: 3)
         let mapView = GMSMapView.map(withFrame: .zero,camera: camera)
         mapView.mapType = .normal
@@ -95,14 +95,6 @@ class ViewController: UIViewController,GMSMapViewDelegate {
         self.view = mapView
     }
     
-    override func viewDidLoad() {
-        locationManager = CLLocationManager()
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-        locationManager.requestAlwaysAuthorization()
-        locationManager.startUpdatingLocation()
-        locationManager.delegate = self
-        
-    }
     
     /*************************************************************
      *                                                           *
@@ -117,12 +109,15 @@ class ViewController: UIViewController,GMSMapViewDelegate {
             destination.advancedLocation = self.advancedLocation
         }
     }
-    
-    /*************************************************************
-     *                                                           *
-     *                        Map Methods                        *
-     *                                                           *
-     *************************************************************/
+}
+
+
+/*************************************************************
+ *                                                           *
+ *                        Map Delegate                       *
+ *                                                           *
+ *************************************************************/
+extension ViewController: GMSMapViewDelegate{
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
         print("You Tapped at \(coordinate.latitude),\(coordinate.longitude)")
         
@@ -137,7 +132,7 @@ class ViewController: UIViewController,GMSMapViewDelegate {
         let circle = GMSCircle(position: coordinate, radius: 20)
         circle.map = mapView
         circle.strokeColor = .green
-        circle.strokeWidth = 15
+        circle.strokeWidth = 10
         //Create a marker at the tapped postion
         marker = GMSMarker(position: coordinate)
         marker.appearAnimation = .pop
@@ -195,52 +190,7 @@ class ViewController: UIViewController,GMSMapViewDelegate {
         }
         dataTask?.resume()
     }
-    
-    
-}
 
-
-
-/*************************************************************
- *                                                           *
- *                        LocationManager Delegate           *
- *                                                           *
- *************************************************************/
-extension ViewController: CLLocationManagerDelegate{
-    //To handle incoming location events.
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let location: CLLocation = locations.last!
-        
-        currentLatitude  = location.coordinate.latitude 
-        currentLongitude = location.coordinate.longitude
-        locationManager.stopUpdatingLocation()
-        
-    }
-    
-    //Handle authorization for location manager
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-        case .restricted:
-            print("Location access was restricted")
-        case .denied:
-            print("Location access was denied")
-            mapView.isHidden = false
-        case .notDetermined:
-            print("Location access was not determined")
-        case .authorizedAlways:
-            fallthrough
-        case .authorizedWhenInUse:
-            print("Location access is OK")
-        }
-    }
-    
-    //Handle location manager errors
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        locationManager.stopUpdatingLocation()
-        print("Erorr: \(error)")
-    }
-    
-    
 }
 
 

@@ -21,7 +21,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uYq-JL-znZ" userLabel="popUpView">
+                            <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uYq-JL-znZ" userLabel="popUpView">
                                 <rect key="frame" x="37.5" y="243.5" width="300" height="180"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4rt-6d-Yty" userLabel="resultLabel">
@@ -198,10 +198,9 @@
         <!--Navigation Controller-->
         <scene sceneID="0Z0-G0-iNp">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Pme-9i-rFC" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yVf-Wu-QEa" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="4uZ-hB-AND">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="4uZ-hB-AND">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -210,6 +209,7 @@
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="yQ5-qj-dL3"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pme-9i-rFC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5132" y="384"/>
         </scene>

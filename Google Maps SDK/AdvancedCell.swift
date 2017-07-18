@@ -23,7 +23,7 @@ class AdvancedCell: UITableViewCell {
     
     /*************************************************************
      *                                                           *
-     *                      Other methods                        *
+     *                      Configure methods                    *
      *                                                           *
      *************************************************************/
     //Configure the cell labels with given data

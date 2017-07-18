@@ -40,7 +40,10 @@ class DarkSkyModel {
      *                      Parsing methods                      *
      *                                                           *
      *************************************************************/
-    //Parse the server's JSON response into a dictionary.
+    /// Parse the server's JSON response into a dictionary.
+    ///
+    /// - Parameter data: The data from after the request
+    /// - Returns: Dictionary loaded with the data
     func parseJSON(Data data:Data)->[String:Any]?{
         do{
             return try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any]
@@ -50,7 +53,10 @@ class DarkSkyModel {
         }
     }
     
-    //Parse the dictionary to a string.
+    /// Parse the dictionary to a prediction string.
+    ///
+    /// - Parameter data: The dictionary from parsing the JSON
+    /// - Returns: Prediction string
     func parseData(Data data:[String:Any]) -> String {
         
         let dailyDict = data["daily"] as? [String:Any]

@@ -14,13 +14,21 @@ class ResultViewController: UIViewController {
     
     /*************************************************************
      *                                                           *
-     *                        Outlets                            *
+     *                       Outlets                             *
      *                                                           *
      *************************************************************/
     @IBOutlet weak var resultLabel: UILabel!
     @IBOutlet weak var upperResultLabel : UILabel!
     @IBOutlet weak var popUpView  : UIView!
     
+    /*************************************************************
+     *                                                           *
+     *                      IBAction methods                     *
+     *                                                           *
+     *************************************************************/
+    @IBAction func advancedDetailsButton(_ sender: UIButton) {
+        performSegue(withIdentifier: identefiers.advancedViewController, sender: nil)
+    }
     
     /*************************************************************
      *                                                           *
@@ -28,7 +36,8 @@ class ResultViewController: UIViewController {
      *                                                           *
      *************************************************************/
     var advancedLocation = [GMSAddress]()
-    var result:String = ""
+    var result           = ""
+    
     
     
     
@@ -48,14 +57,20 @@ class ResultViewController: UIViewController {
      *                                                           *
      *************************************************************/
     override func viewDidLoad() {
+        super.viewDidLoad()
+        // Make the corner rounded
         popUpView.layer.cornerRadius = 20
+        
+        // To recognize a tap outside the popup
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(close))
         gestureRecognizer.cancelsTouchesInView = false
         gestureRecognizer.delegate = self
         view.addGestureRecognizer(gestureRecognizer)
         
+        // Display the result
         resultLabel.text = result
         
+        // Display country in upper label
         for i in advancedLocation {
             if i.country != nil {
                 upperResultLabel.text = i.country
@@ -79,14 +94,7 @@ class ResultViewController: UIViewController {
     }
     
     
-    /*************************************************************
-     *                                                           *
-     *                      IBAction methods                     *
-     *                                                           *
-     *************************************************************/
-    @IBAction func advancedDetailsButton(_ sender: UIButton) {
-        performSegue(withIdentifier: identefiers.advancedViewController, sender: nil)
-    }
+    
     
     
     /*************************************************************
@@ -104,7 +112,7 @@ class ResultViewController: UIViewController {
     
     /*************************************************************
      *                                                           *
-     *                        Other methods                      *
+     *                        Close method                       *
      *                                                           *
      *************************************************************/
     func close(){
