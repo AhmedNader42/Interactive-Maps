@@ -109,6 +109,21 @@ class ViewController: UIViewController {
             destination.advancedLocation = self.advancedLocation
         }
     }
+    /// Shows a popup Error on screen
+    ///
+    /// - Parameters:
+    ///   - title: Title of the Error
+    ///   - message: Message displayed within the body
+    func showError(Title title:String, Message message: String ) {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        
+        alert.addAction(okAction)
+        present(alert,animated: true)
+    }
+
 }
 
 
@@ -173,7 +188,7 @@ extension ViewController: GMSMapViewDelegate{
             data,respone,error in
             
             if error != nil {
-                print("Error : \(error)")
+                self.showError(Title: "Network error", Message: "Check you internet connection")
             }
             else {
                 let dataDict = self.darkSky.parseJSON(Data: data!)
