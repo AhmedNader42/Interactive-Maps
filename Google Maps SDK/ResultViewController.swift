@@ -10,7 +10,7 @@ import UIKit
 import GoogleMaps
 
 class ResultViewController: UIViewController {
-
+    
     
     /*************************************************************
      *                                                           *
@@ -72,14 +72,20 @@ class ResultViewController: UIViewController {
         // Display the result.
         resultLabel.text = result
         
-        // Display country in upper label
-        for i in advancedLocation {
-            if i.country != nil {
-                upperResultLabel.text = i.country
-                break
-            }
-            else{
-                upperResultLabel.text = "Not Found"
+        // Make sure the advanced details are not empty.
+        if advancedLocation.count == 0 {
+            upperResultLabel.text = "Undetermined"
+        }
+        else {
+            // Display country in upper label
+            for i in advancedLocation {
+                if i.country != nil {
+                    upperResultLabel.text = i.country
+                    break
+                }
+                else{
+                    upperResultLabel.text = "Not Found"
+                }
             }
         }
     }
