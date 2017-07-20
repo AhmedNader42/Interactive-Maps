@@ -11,7 +11,7 @@ import UIKit
 class DimmingPresentationController: UIPresentationController {
 
     
-    //To prevent the map from being removed from the background
+    // To prevent the previous ViewController from being removed from the background.
     override var shouldRemovePresentersView: Bool{
         return false
     }

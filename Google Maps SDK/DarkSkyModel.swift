@@ -26,8 +26,17 @@ class DarkSkyModel {
      *                                                           *
      *************************************************************/
     
+    /// Construct a valid darkSky URL from a latitude and longitude.
+    ///
+    /// - Parameters:
+    ///   - lat: Latitude of the desired place.
+    ///   - lon: Longitude of the desired place.
+    /// - Returns: Valid darkSky URL.
     func darkSkyURL(latitude lat: String,longitude lon: String) -> URL {
+        
+        // Construct the string of the url.
         let urlString = String(format: "https://api.darksky.net/forecast/%@/%@,%@?units=%@&lang=%@",key,lat,lon,unit,language)
+        // Construct the URL.
         let url = URL(string: urlString)
         
         return url!
@@ -42,10 +51,11 @@ class DarkSkyModel {
      *************************************************************/
     /// Parse the server's JSON response into a dictionary.
     ///
-    /// - Parameter data: The data from after the request
-    /// - Returns: Dictionary loaded with the data
+    /// - Parameter data: The JSON data of the request.
+    /// - Returns: Dictionary with the data.
     func parseJSON(Data data:Data)->[String:Any]?{
         do{
+            // Try to turn the JSON dta into a dictionary.
             return try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any]
         } catch let error {
             print("Error : \(error)")
@@ -58,8 +68,9 @@ class DarkSkyModel {
     /// - Parameter data: The dictionary from parsing the JSON
     /// - Returns: Prediction string
     func parseData(Data data:[String:Any]) -> String {
-        
+        // Get the daily data.
         let dailyDict = data["daily"] as? [String:Any]
+        // Get the summary from the daily part.
         let prediction = dailyDict?["summary"] as! String
         
         return prediction

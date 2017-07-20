@@ -28,6 +28,7 @@ class ViewController: UIViewController {
      *                                                           *
      *************************************************************/
     @IBAction func languageSegmentedControlButton(_ sender: UISegmentedControl) {
+        // Set the language according to the selected segment.
         switch languageSegmentedControl.selectedSegmentIndex {
         case 1:
             darkSky.language = "ar"
@@ -41,6 +42,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func unitSegmentedControl (_ sender: UISegmentedControl) {
+        // Set the unit of measure according to the selected segment.
         switch unitSegmentedControl.selectedSegmentIndex {
         case 1:
             darkSky.unit = "us"
@@ -102,17 +104,27 @@ class ViewController: UIViewController {
      *                                                           *
      *************************************************************/
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        // Make sure the segue is going to resultViewController.
         if segue.identifier == identifiers.resultViewController {
-            
             let destination = segue.destination as! ResultViewController
+            
+            // Give the result to the resultviewController
             destination.result = self.prediction
+            // Give the advanced details to the resulViewController.
             destination.advancedLocation = self.advancedLocation
         }
     }
+    
+    /*************************************************************
+     *                                                           *
+     *                           Error                           *
+     *                                                           *
+     *************************************************************/
     /// Shows a popup Error on screen
     ///
     /// - Parameters:
-    ///   - title: Title of the Error
+    ///   - title: Title at the top of the popup
     ///   - message: Message displayed within the body
     func showError(Title title:String, Message message: String ) {
         
@@ -127,60 +139,70 @@ class ViewController: UIViewController {
 }
 
 
+
 /*************************************************************
  *                                                           *
  *                        Map Delegate                       *
  *                                                           *
  *************************************************************/
 extension ViewController: GMSMapViewDelegate{
+    
+    // When the user taps on a place.
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
         print("You Tapped at \(coordinate.latitude),\(coordinate.longitude)")
         
-        //Clear all the map overlays (markers/overlays).
+        // Clear all the map overlays (markers/overlays).
         mapView.clear()
         
-        //Animate and zoom to the tapped postition.
+        // Animate and zoom to the tapped postition.
         mapView.animate(toLocation: coordinate)
         mapView.animate(toZoom: 6)
         
-        //Create a circle at the tapped postion (Under the marker).
+        // Create a circle at the tapped postion (Under the marker).
         let circle = GMSCircle(position: coordinate, radius: 20)
         circle.map = mapView
         circle.strokeColor = .green
         circle.strokeWidth = 10
-        //Create a marker at the tapped postion
+        
+        // Create a marker at the tapped postion
         marker = GMSMarker(position: coordinate)
         marker.appearAnimation = .pop
         marker.icon = GMSMarker.markerImage(with: .green)
         marker.map = mapView
         
         
-        //Cancel previous request and start a new one.
+        // Cancel previous request if it is still running and start a new one.
         dataTask?.cancel()
         
         
         
-        //Reverse Geocode the coordinates to get more detailed information.
+        //Reverse Geocode the coordinates to get more detailed information(Country,locality,...)
         let loc = GMSGeocoder()
         loc.reverseGeocodeCoordinate(coordinate, completionHandler: {
             data,error in
+            
             if error != nil {
                 print("ReverseGeoCoderError : \(error)")
             }
             else if data != nil, data?.results()?.count != 0 {
-                
+                // Fill the advanced location information from the result of reverseGeoCoding the coordinates.
                 self.advancedLocation = (data?.results())!
+                
+                // Make sure the country is known.
                 if data?.firstResult()?.country != nil {
+                    // Set the title of the marker to the country.
                     self.marker.title = (data?.firstResult()?.country)!
                 }
+                // Make sure the locality is known
                 if data?.firstResult()?.locality != nil {
+                    // Set the snippet(Subtitle) of the marker to the locality.
                     self.marker.snippet = data?.firstResult()?.locality
                 }
                 
             }
         })
         
-        //Send a request with the url formatted by the DarkSky model
+        // Get a valid DarkSky URL from the darkSky model with the tapped coordinates.
         let url = darkSky.darkSkyURL(latitude: String(coordinate.latitude), longitude: String(coordinate.longitude))
         let session = URLSession.shared
         dataTask = session.dataTask(with: url){
@@ -188,11 +210,14 @@ extension ViewController: GMSMapViewDelegate{
             data,respone,error in
             
             if error != nil {
+                // Show internet connection error.
                 self.showError(Title: "Network error", Message: "Check you internet connection")
             }
             else {
+                // Parse the JSON data from the request to a dictionary using the darkSky model.
                 let dataDict = self.darkSky.parseJSON(Data: data!)
                 
+                // Parse the data dictionary to get the prediction.
                 self.prediction =  self.darkSky.parseData(Data: dataDict!)
                 
                 

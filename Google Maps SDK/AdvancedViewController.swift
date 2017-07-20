@@ -48,8 +48,11 @@ class AdvancedViewController: UIViewController {
      *************************************************************/
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Setup the tableview height to match the nib and register the Nib
+        
+        // Setup the tableview height to match the custom Nib Cell.
         tableView.rowHeight = 60
+        
+        // Register the custom Nib.
         let cellNib = UINib(nibName: identefiers.advancedCell, bundle: nil)
         tableView.register(cellNib, forCellReuseIdentifier: identefiers.advancedCell)
         
@@ -67,7 +70,7 @@ class AdvancedViewController: UIViewController {
     /// Fill the results dictionary with the values to display on screen
     func configureData(){
         
-        // Make sure the dict isn't emptt
+        // Make sure the dict isn't empty
         if advancedLocation.count != 0 {
             
             // Loop over the dict to find a valid(not nil) value for each key or write not found
@@ -160,6 +163,7 @@ extension AdvancedViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         
+        // Make an advanceCell.
         let cell = tableView.dequeueReusableCell(withIdentifier: identefiers.advancedCell, for: indexPath) as! AdvancedCell
         
         
@@ -169,23 +173,3 @@ extension AdvancedViewController: UITableViewDataSource {
         return cell
     }
 }
-
-
-extension AdvancedViewController: UIViewControllerTransitioningDelegate{
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        return DimmingPresentationController(presentedViewController: presented, presenting: presenting)
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-

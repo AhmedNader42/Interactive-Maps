@@ -27,6 +27,7 @@ class ResultViewController: UIViewController {
      *                                                           *
      *************************************************************/
     @IBAction func advancedDetailsButton(_ sender: UIButton) {
+        
         performSegue(withIdentifier: identefiers.advancedViewController, sender: nil)
     }
     
@@ -58,16 +59,17 @@ class ResultViewController: UIViewController {
      *************************************************************/
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Make the corner rounded
+        
+        // Make the corners of the popupView rounded.
         popUpView.layer.cornerRadius = 20
         
-        // To recognize a tap outside the popup
+        // Recognize a tap and if it is outside the popup close it.
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(close))
         gestureRecognizer.cancelsTouchesInView = false
         gestureRecognizer.delegate = self
         view.addGestureRecognizer(gestureRecognizer)
         
-        // Display the result
+        // Display the result.
         resultLabel.text = result
         
         // Display country in upper label
@@ -103,9 +105,11 @@ class ResultViewController: UIViewController {
      *                                                           *
      *************************************************************/
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == identefiers.advancedViewController
-        {
+        // Make sure the segue is going to the advancedVC.
+        if segue.identifier == identefiers.advancedViewController {
+            
             let destination = segue.destination as! AdvancedViewController
+            // Give the advancedDetails to the advancedVC.
             destination.advancedLocation = advancedLocation
         }
     }
@@ -115,6 +119,7 @@ class ResultViewController: UIViewController {
      *                        Close method                       *
      *                                                           *
      *************************************************************/
+    /// Dismiss the ViewController that was presented modally.
     func close(){
         dismiss(animated: true, completion: nil)
     }
@@ -128,6 +133,7 @@ class ResultViewController: UIViewController {
  *                                                           *
  *************************************************************/
 extension ResultViewController: UIViewControllerTransitioningDelegate{
+    
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return DimmingPresentationController(presentedViewController: presented, presenting: presenting)
     }
@@ -140,7 +146,7 @@ extension ResultViewController: UIViewControllerTransitioningDelegate{
  *                                                           *
  *************************************************************/
 extension ResultViewController: UIGestureRecognizerDelegate {
-    
+    // Recognize if the touch is inside or outside of the popupView.
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         return (touch.view === self.view)
     }
