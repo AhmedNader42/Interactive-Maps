@@ -31,13 +31,13 @@ class ViewController: UIViewController {
         // Set the language according to the selected segment.
         switch languageSegmentedControl.selectedSegmentIndex {
         case 1:
-            darkSky.language = "ar"
+            language = "ar"
         case 2 :
-            darkSky.language = "es"
+            language = "es"
         case 3:
-            darkSky.language = "fr"
+            language = "fr"
         default:
-            darkSky.language = "en"
+            language = "en"
         }
     }
     
@@ -45,9 +45,9 @@ class ViewController: UIViewController {
         // Set the unit of measure according to the selected segment.
         switch unitSegmentedControl.selectedSegmentIndex {
         case 1:
-            darkSky.unit = "us"
+            unit = "us"
         default:
-            darkSky.unit = "si"
+            unit = "si"
         }
     }
     
@@ -64,11 +64,9 @@ class ViewController: UIViewController {
     var advancedLocation     = [GMSAddress]()
     var marker               = GMSMarker()
     
-    //Networking related
-    var dataTask             : URLSessionDataTask?
-    let darkSky              = DarkSkyModel()
-    var prediction           = ""
-    
+    var unit     = ""
+    var language = "en"
+    var tappedCoordinates : CLLocationCoordinate2D?
     
     
     /*************************************************************
@@ -109,10 +107,10 @@ class ViewController: UIViewController {
         if segue.identifier == identifiers.resultViewController {
             let destination = segue.destination as! ResultViewController
             
-            // Give the result to the resultviewController
-            destination.result = self.prediction
-            // Give the advanced details to the resulViewController.
-            destination.advancedLocation = self.advancedLocation
+            destination.darkSky.unit     = self.unit
+            destination.darkSky.language = self.language
+            destination.tappedCoordinates = self.tappedCoordinates
+            
         }
     }
     
@@ -145,7 +143,7 @@ class ViewController: UIViewController {
  *                        Map Delegate                       *
  *                                                           *
  *************************************************************/
-extension ViewController: GMSMapViewDelegate{
+extension ViewController: GMSMapViewDelegate {
     
     // When the user taps on a place.
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
@@ -170,68 +168,15 @@ extension ViewController: GMSMapViewDelegate{
         marker.icon = GMSMarker.markerImage(with: .green)
         marker.map = mapView
         
+        self.tappedCoordinates = coordinate
         
-        // Cancel previous request if it is still running and start a new one.
-        dataTask?.cancel()
+        //Go to the ResultViewController
+        self.performSegue(withIdentifier: identifiers.resultViewController, sender: nil)
         
-        
-        
-        //Reverse Geocode the coordinates to get more detailed information(Country,locality,...)
-        let loc = GMSGeocoder()
-        loc.reverseGeocodeCoordinate(coordinate, completionHandler: {
-            data,error in
-            
-            if error != nil {
-                print("ReverseGeoCoderError : \(error)")
-            }
-            else if data != nil, data?.results()?.count != 0 {
-                // Fill the advanced location information from the result of reverseGeoCoding the coordinates.
-                self.advancedLocation = (data?.results())!
-                
-                // Make sure the country is known.
-                if data?.firstResult()?.country != nil {
-                    // Set the title of the marker to the country.
-                    self.marker.title = (data?.firstResult()?.country)!
-                }
-                // Make sure the locality is known
-                if data?.firstResult()?.locality != nil {
-                    // Set the snippet(Subtitle) of the marker to the locality.
-                    self.marker.snippet = data?.firstResult()?.locality
-                }
-                
-            }
-        })
-        
-        // Get a valid DarkSky URL from the darkSky model with the tapped coordinates.
-        let url = darkSky.darkSkyURL(latitude: String(coordinate.latitude), longitude: String(coordinate.longitude))
-        let session = URLSession.shared
-        dataTask = session.dataTask(with: url){
-            
-            data,respone,error in
-            
-            if error != nil {
-                // Show internet connection error.
-                self.showError(Title: "Network error", Message: "Check you internet connection")
-            }
-            else {
-                // Parse the JSON data from the request to a dictionary using the darkSky model.
-                let dataDict = self.darkSky.parseJSON(Data: data!)
-                
-                // Parse the data dictionary to get the prediction.
-                self.prediction =  self.darkSky.parseData(Data: dataDict!)
-                
-                
-                //Go to the ResultViewController
-                DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: identifiers.resultViewController, sender: nil)
-                }
-                
-            }
-        }
-        dataTask?.resume()
     }
 
 }
+
 
 
 

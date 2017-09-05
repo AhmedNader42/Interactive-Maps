@@ -20,7 +20,9 @@ class ResultViewController: UIViewController {
     @IBOutlet weak var resultLabel: UILabel!
     @IBOutlet weak var upperResultLabel : UILabel!
     @IBOutlet weak var popUpView  : UIView!
+    @IBOutlet weak var upperLabelActivityIndicator: UIActivityIndicatorView!
     
+    @IBOutlet weak var lowerLabelActivityIndicator: UIActivityIndicatorView!
     /*************************************************************
      *                                                           *
      *                      IBAction methods                     *
@@ -37,9 +39,10 @@ class ResultViewController: UIViewController {
      *                                                           *
      *************************************************************/
     var advancedLocation = [GMSAddress]()
-    var result           = ""
-    
-    
+    //Networking related
+    var dataTask             : URLSessionDataTask?
+    var darkSky              = DarkSkyModel()
+    var tappedCoordinates    : CLLocationCoordinate2D?
     
     
     /*************************************************************
@@ -60,6 +63,20 @@ class ResultViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        darkSky.delegate = self
+        
+        // Check if the tappedCoordinates passed from previous VC exists.
+        if tappedCoordinates != nil {
+            // Request the weather with the tapped coordinates and use the model to get the results.
+            upperLabelActivityIndicator.startAnimating()
+            lowerLabelActivityIndicator.startAnimating()
+            darkSky.getWeather(coordinates: tappedCoordinates!)
+            darkSky.getLocation(coordinate: tappedCoordinates!)
+        }
+        
+        
+        
+        
         // Make the corners of the popupView rounded.
         popUpView.layer.cornerRadius = 20
         
@@ -69,26 +86,14 @@ class ResultViewController: UIViewController {
         gestureRecognizer.delegate = self
         view.addGestureRecognizer(gestureRecognizer)
         
-        // Display the result.
-        resultLabel.text = result
         
-        // Make sure the advanced details are not empty.
-        if advancedLocation.count == 0 {
-            upperResultLabel.text = "Undetermined"
-        }
-        else {
-            // Display country in upper label
-            for i in advancedLocation {
-                if i.country != nil {
-                    upperResultLabel.text = i.country
-                    break
-                }
-                else{
-                    upperResultLabel.text = "Not Found"
-                }
-            }
-        }
+        
     }
+    
+    
+    
+    
+    
     
     /*************************************************************
      *                                                           *
@@ -130,6 +135,43 @@ class ResultViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 }
+
+
+
+extension ResultViewController: darkSkyDelegate {
+    
+    func weatherResultsReturned(result: String) {
+        lowerLabelActivityIndicator.stopAnimating()
+        self.resultLabel.text = result
+    }
+    
+    func locationResultsReturned(location: [GMSAddress]) {
+        
+        upperLabelActivityIndicator.stopAnimating()
+        
+        // Set the advanced location for the detailed VC.
+        advancedLocation = location
+        
+        
+        // Make sure the locations are not empty.
+        if location.count == 0 {
+            upperResultLabel.text = "Undetermined"
+        }
+        else {
+            // Display country in upper label
+            for i in location {
+                if i.country != nil {
+                    upperResultLabel.text = i.country
+                    break
+                }
+                else{
+                    upperResultLabel.text = "Not Found"
+                }
+            }
+        }
+    }
+}
+
 
 
 

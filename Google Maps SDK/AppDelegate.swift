@@ -18,8 +18,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        GMSServices.provideAPIKey("AIzaSyCqMQEljdwoRONo8S1avdrxn6v_DChotpg")
-        GMSPlacesClient.provideAPIKey("AIzaSyCqMQEljdwoRONo8S1avdrxn6v_DChotpg")
+        
+        /*************************************************************
+         *                                                           *
+         *                        IMPORTANT (KEY)                    *
+         *                                                           *
+         *************************************************************/
+        // These were intentionally left empty to remind you that you need to provide an API key for yourself just follow the steps in the GitHub repo.
+        GMSServices.provideAPIKey(SERVICES_KEY)
+        GMSPlacesClient.provideAPIKey(PLACES_KEY)
         return true
     }
 

@@ -24,38 +24,49 @@
                             <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uYq-JL-znZ" userLabel="popUpView">
                                 <rect key="frame" x="37.5" y="243.5" width="300" height="180"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4rt-6d-Yty" userLabel="resultLabel">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" minimumScaleFactor="0.40000000000000002" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4rt-6d-Yty" userLabel="resultLabel">
                                         <rect key="frame" x="8" y="39" width="284" height="133"/>
+                                        <color key="backgroundColor" red="1" green="0.0" blue="1" alpha="0.19172731164383561" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="284" id="NZT-BZ-lnR"/>
                                             <constraint firstAttribute="height" constant="133" id="fev-CK-ldA"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <fontDescription key="fontDescription" name="Optima-Bold" family="Optima" pointSize="19"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fvd-T3-3ul">
                                         <rect key="frame" x="270" y="12" width="22" height="22"/>
+                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="22" id="Ugz-QD-6n6"/>
                                             <constraint firstAttribute="height" constant="22" id="Z2P-J1-Szt"/>
                                         </constraints>
+                                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <state key="normal">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
                                         <connections>
                                             <segue destination="qKR-SX-ltW" kind="show" identifier="ToAdvancedViewController" id="CT6-Sl-3EX"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a4o-cQ-fuv">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.40000000000000002" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a4o-cQ-fuv">
                                         <rect key="frame" x="8" y="8" width="254" height="26"/>
+                                        <color key="backgroundColor" red="1" green="0.0" blue="1" alpha="0.19" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="26" id="fp0-Ya-mnV"/>
                                             <constraint firstAttribute="width" constant="254" id="l5D-gx-43r"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" name="Optima-Bold" family="Optima" pointSize="19"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="VzA-4v-hcT">
+                                        <rect key="frame" x="125" y="11" width="20" height="20"/>
+                                    </activityIndicatorView>
                                 </subviews>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.9453125" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="4rt-6d-Yty" firstAttribute="top" secondItem="a4o-cQ-fuv" secondAttribute="bottom" constant="5" id="3sr-U1-0Rc"/>
                                     <constraint firstAttribute="trailing" secondItem="Fvd-T3-3ul" secondAttribute="trailing" constant="8" id="7nN-Ng-PKg"/>
@@ -67,20 +78,29 @@
                                     <constraint firstItem="Fvd-T3-3ul" firstAttribute="top" secondItem="uYq-JL-znZ" secondAttribute="top" constant="12" id="XAd-Xw-iim"/>
                                     <constraint firstAttribute="bottom" secondItem="4rt-6d-Yty" secondAttribute="bottom" constant="8" id="YIG-Ct-BaK"/>
                                     <constraint firstItem="4rt-6d-Yty" firstAttribute="centerX" secondItem="uYq-JL-znZ" secondAttribute="centerX" id="eB4-AS-2gU"/>
+                                    <constraint firstItem="4rt-6d-Yty" firstAttribute="top" secondItem="VzA-4v-hcT" secondAttribute="bottom" constant="8" id="f3J-wI-p95"/>
+                                    <constraint firstItem="VzA-4v-hcT" firstAttribute="top" secondItem="uYq-JL-znZ" secondAttribute="top" constant="11" id="jrq-YX-qon"/>
                                     <constraint firstItem="a4o-cQ-fuv" firstAttribute="leading" secondItem="uYq-JL-znZ" secondAttribute="leading" constant="8" id="ukq-hu-wjG"/>
                                     <constraint firstItem="a4o-cQ-fuv" firstAttribute="top" secondItem="uYq-JL-znZ" secondAttribute="top" constant="8" id="zEr-3r-6In"/>
                                 </constraints>
                             </view>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Z92-r3-9Xi">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.34923480308219179" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="uYq-JL-znZ" firstAttribute="centerX" secondItem="tKc-MW-wW5" secondAttribute="centerX" id="HGZ-QB-eyr"/>
                             <constraint firstItem="uYq-JL-znZ" firstAttribute="centerY" secondItem="tKc-MW-wW5" secondAttribute="centerY" id="d0e-Kc-2nk"/>
+                            <constraint firstItem="Z92-r3-9Xi" firstAttribute="centerY" secondItem="tKc-MW-wW5" secondAttribute="centerY" id="icR-vh-Jdk"/>
+                            <constraint firstItem="Z92-r3-9Xi" firstAttribute="centerX" secondItem="tKc-MW-wW5" secondAttribute="centerX" id="pro-ma-q49"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="lowerLabelActivityIndicator" destination="Z92-r3-9Xi" id="mBc-0G-QQ1"/>
                         <outlet property="popUpView" destination="uYq-JL-znZ" id="o6K-67-00x"/>
                         <outlet property="resultLabel" destination="4rt-6d-Yty" id="CFN-lt-9MW"/>
+                        <outlet property="upperLabelActivityIndicator" destination="VzA-4v-hcT" id="3bX-Hg-76p"/>
                         <outlet property="upperResultLabel" destination="a4o-cQ-fuv" id="q8G-1u-NfN"/>
                     </connections>
                 </viewController>
@@ -200,7 +220,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yVf-Wu-QEa" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="4uZ-hB-AND">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="4uZ-hB-AND">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
