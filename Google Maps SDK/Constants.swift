@@ -11,9 +11,9 @@ import Foundation
 
 // You can obtain your own key from "https://developers.google.com/maps/documentation/ios-sdk/"
 
-let SERVICES_KEY = "AIzaSyA5WfJd4gbC783iI-DS9raEBG2Kis2jV-Y"
+let SERVICES_KEY =
 
-let PLACES_KEY   = "AIzaSyA5WfJd4gbC783iI-DS9raEBG2Kis2jV-Y"
+let PLACES_KEY   =
 
 // You can obtain your own key from "https://darksky.net/dev"
-let DARK_SKY_KEY = "bd16abd28bfd386b1d06b9012873530e"
+let DARK_SKY_KEY = 

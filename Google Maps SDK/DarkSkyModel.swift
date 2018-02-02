@@ -21,11 +21,7 @@ extension darkSkyDelegate {
 
 class DarkSkyModel {
     
-    /*****************************************************
-     *                                                   *
-     *                      Variables                    *
-     *                                                   *
-     *****************************************************/
+    // MARK: - Varaibles
     // You need to put your own key in the constants file.
     private let key = DARK_SKY_KEY
     
@@ -35,11 +31,7 @@ class DarkSkyModel {
     
     var delegate : darkSkyDelegate?
     
-    /*************************************************************
-     *                                                           *
-     *                      URL formatting                       *
-     *                                                           *
-     *************************************************************/
+    // MARK: - URL Formatting
     
     /// Construct a valid darkSky URL from a latitude and longitude.
     ///
@@ -59,11 +51,7 @@ class DarkSkyModel {
     
     
     
-    /*************************************************************
-     *                                                           *
-     *                      Parsing methods                      *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Parsing methods
     /// Parse the server's JSON response into a dictionary.
     ///
     /// - Parameter data: The JSON data of the request.
@@ -134,7 +122,7 @@ class DarkSkyModel {
             data,error in
             
             if error != nil {
-                print("ReverseGeoCoderError : \(error)")
+                print("ReverseGeoCoderError : \(String(describing: error))")
             }
             else if data != nil, data?.results()?.count != 0 {
                 // Notify the delegate that you got the values and give it to him.

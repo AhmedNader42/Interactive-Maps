@@ -11,21 +11,13 @@ import UIKit
 class AdvancedCell: UITableViewCell {
 
     
-    /*************************************************************
-     *                                                           *
-     *                        Outlets                            *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Outlets
     @IBOutlet weak var keyLabel  : UILabel!
     @IBOutlet weak var valueLabel: UILabel!
     
    
     
-    /*************************************************************
-     *                                                           *
-     *                      Configure methods                    *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Setup method
     //Configure the cell labels with given data
     func configure (Key key: String,Value value: Any) {
         keyLabel.text = key

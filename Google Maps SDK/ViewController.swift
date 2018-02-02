@@ -13,20 +13,12 @@ import GoogleMaps
 class ViewController: UIViewController {
     
     
-    /*************************************************************
-     *                                                           *
-     *                            Outlets                        *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Outlets
     @IBOutlet weak var languageSegmentedControl : UISegmentedControl!
     @IBOutlet weak var unitSegmentedControl     : UISegmentedControl!
     
     
-    /*************************************************************
-     *                                                           *
-     *                        IBAction methods                   *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Actions
     @IBAction func languageSegmentedControlButton(_ sender: UISegmentedControl) {
         // Set the language according to the selected segment.
         switch languageSegmentedControl.selectedSegmentIndex {
@@ -52,11 +44,7 @@ class ViewController: UIViewController {
     }
     
     
-    /*************************************************************
-     *                                                           *
-     *                      Variables                            *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Variables
     //Location/Map related
     var mapView              : GMSMapView!
     var currentLatitude      = CLLocationDegrees(floatLiteral: 30.5)
@@ -69,22 +57,14 @@ class ViewController: UIViewController {
     var tappedCoordinates : CLLocationCoordinate2D?
     
     
-    /*************************************************************
-     *                                                           *
-     *                        Identifiers                        *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Identifiers
     struct identifiers {
         static let resultViewController = "ToResultViewController"
     }
     
     
     
-    /*************************************************************
-     *                                                           *
-     *                        Activity Life cycle                *
-     *                                                           *
-     *************************************************************/
+    // MARK: - View Life Cycle
     override func loadView() {
        
         // Setup the camera
@@ -96,11 +76,7 @@ class ViewController: UIViewController {
     }
     
     
-    /*************************************************************
-     *                                                           *
-     *                        Segue method                       *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         // Make sure the segue is going to resultViewController.
@@ -114,11 +90,7 @@ class ViewController: UIViewController {
         }
     }
     
-    /*************************************************************
-     *                                                           *
-     *                           Error                           *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Error Alert
     /// Shows a popup Error on screen
     ///
     /// - Parameters:
@@ -138,11 +110,7 @@ class ViewController: UIViewController {
 
 
 
-/*************************************************************
- *                                                           *
- *                        Map Delegate                       *
- *                                                           *
- *************************************************************/
+// MARK: - Map Delegate
 extension ViewController: GMSMapViewDelegate {
     
     // When the user taps on a place.

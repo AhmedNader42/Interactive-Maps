@@ -11,41 +11,25 @@ import GoogleMaps
 
 class AdvancedViewController: UIViewController {
     
-    /*************************************************************
-     *                                                           *
-     *                           Outlets                         *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
     
     
-    /*************************************************************
-     *                                                           *
-     *                          Variables                        *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Variables
     var advancedLocation = [GMSAddress]()
     var advancedDetails: [String:String] = [:]
     var keys = ["Country","Locality","SubLocality","ThoroughFare","Longitude","Latitude","PostalCode","Lines","AdministrativeArea"]
     
     
     
-    /*************************************************************
-     *                                                           *
-     *                        Identifieres                       *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Identifiers
     struct identefiers {
         static let advancedCell = "AdvancedCell"
     }
     
     
     
-    /*************************************************************
-     *                                                           *
-     *                   Activity life cycle                     *
-     *                                                           *
-     *************************************************************/
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -62,11 +46,7 @@ class AdvancedViewController: UIViewController {
     }
     
     
-    /*************************************************************
-     *                                                           *
-     *                        Configure method                   *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Setup Method
     /// Fill the results dictionary with the values to display on screen
     func configureData(){
         
@@ -150,11 +130,7 @@ class AdvancedViewController: UIViewController {
 
 
 
-/*************************************************************
- *                                                           *
- *                        Table View methods                 *
- *                                                           *
- *************************************************************/
+// MARK: - Table View Methods
 extension AdvancedViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

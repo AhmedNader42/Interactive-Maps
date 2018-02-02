@@ -12,32 +12,19 @@ import GoogleMaps
 class ResultViewController: UIViewController {
     
     
-    /*************************************************************
-     *                                                           *
-     *                       Outlets                             *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Outlets
     @IBOutlet weak var resultLabel: UILabel!
     @IBOutlet weak var upperResultLabel : UILabel!
     @IBOutlet weak var popUpView  : UIView!
     @IBOutlet weak var upperLabelActivityIndicator: UIActivityIndicatorView!
-    
     @IBOutlet weak var lowerLabelActivityIndicator: UIActivityIndicatorView!
-    /*************************************************************
-     *                                                           *
-     *                      IBAction methods                     *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Actions
     @IBAction func advancedDetailsButton(_ sender: UIButton) {
         
         performSegue(withIdentifier: identefiers.advancedViewController, sender: nil)
     }
     
-    /*************************************************************
-     *                                                           *
-     *                      Variables                            *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Variables
     var advancedLocation = [GMSAddress]()
     //Networking related
     var dataTask             : URLSessionDataTask?
@@ -45,21 +32,13 @@ class ResultViewController: UIViewController {
     var tappedCoordinates    : CLLocationCoordinate2D?
     
     
-    /*************************************************************
-     *                                                           *
-     *                      Identifiers                          *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Identifiers
     struct identefiers {
         static let advancedViewController = "ToAdvancedViewController"
     }
     
     
-    /*************************************************************
-     *                                                           *
-     *                      Activity Life cycle                  *
-     *                                                           *
-     *************************************************************/
+    // MARK: - View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -90,16 +69,7 @@ class ResultViewController: UIViewController {
         
     }
     
-    
-    
-    
-    
-    
-    /*************************************************************
-     *                                                           *
-     *                      Initializer                          *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Init
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         modalPresentationStyle = .custom
@@ -110,11 +80,7 @@ class ResultViewController: UIViewController {
     
     
     
-    /*************************************************************
-     *                                                           *
-     *                        Segue methods                      *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Make sure the segue is going to the advancedVC.
         if segue.identifier == identefiers.advancedViewController {
@@ -125,19 +91,15 @@ class ResultViewController: UIViewController {
         }
     }
     
-    /*************************************************************
-     *                                                           *
-     *                        Close method                       *
-     *                                                           *
-     *************************************************************/
+    // MARK: - Dismiss
     /// Dismiss the ViewController that was presented modally.
-    func close(){
+    @objc func close(){
         dismiss(animated: true, completion: nil)
     }
 }
 
 
-
+// MARK: - DarkSky Delegate
 extension ResultViewController: darkSkyDelegate {
     
     func weatherResultsReturned(result: String) {
@@ -175,11 +137,7 @@ extension ResultViewController: darkSkyDelegate {
 
 
 
-/*************************************************************
- *                                                           *
- *                        Transition Delegate                *
- *                                                           *
- *************************************************************/
+// MARK: - Transition Delegate
 extension ResultViewController: UIViewControllerTransitioningDelegate{
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -188,11 +146,7 @@ extension ResultViewController: UIViewControllerTransitioningDelegate{
 }
 
 
-/*************************************************************
- *                                                           *
- *                   Gesture Recognizer Delegate             *
- *                                                           *
- *************************************************************/
+// MARK: - GestureRecognizer Delegate
 extension ResultViewController: UIGestureRecognizerDelegate {
     // Recognize if the touch is inside or outside of the popupView.
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
